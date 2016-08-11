@@ -1,52 +1,46 @@
 //Luisa Alvarez Valencia
-Uses FuncionesLu,sysutils;
+Uses FuncionesLu,sysutils,math;
 
 procedure ExchangeParent(var H:LEnteros;i:longint);
 var p, aux :longint;
 begin
-    p:= (i-1) div 2;
+    p:= floor((i-1) div 2);
     while (H[i] > H[p]) and (i>p) do
     begin 
        aux:=H[i];
        H[i]:=H[p];
        H[p]:=aux;
        i:=p;
-       p:=(i-1) div 2;
+       p:=floor((i-1) div 2);
     end;
 end;
 
 procedure Push (var H:LEnteros;c:int64);
-var i, cont:longint;
+var i:longint;
 begin
-    cont:=0;
-    for i:=0 to high(H) do
-    begin
-         if (H[i]=0) then 
-            H[i]:=c
-         else
-             cont:=cont+1;
-    end;
-    ExchangeParent (H, cont);
+
+    SetLength(H,high(H)+2);
+    H[high(H)-1]:=c;
+    //writeln(c);
+    {for i:=0 to high(H) do
+       write (H[i], ' ');
+    writeln(' ');
+    }
+    ExchangeParent (H, high(H)-1);
 end;
 
 procedure ExchangeChild(var H:LEnteros;i:longint);
-var l,r,c, cont,aux,a:longint;
+var l,r,c,aux,tam:longint;
 begin
-    cont:=0;
-    l:= 2*i;
-    r:= 2*i +1;
+    l:= 2*i+1;
+    r:= 2*i +2;
+    tam:=high(H);
 
-    for a:=0 to high(h) do
-    begin
-        if H[a]>0 then
-           cont:=cont+1; 
-    end;
-    if H[l]> H [r] then 
-       c:=l;
+    if (H[l]> H [r])then 
+        c:=l;
     if H[r]> H [l] then 
-       c:=r;
-
-    while (l<=cont) and (H[c] > H[i]) do
+        c:=r;
+    while (l<= tam) and (H[c] > H[i]) do
     begin
         aux := H[c];
         H[c]:= H[i];
@@ -56,64 +50,57 @@ begin
             c:=l;
         if H[r]> H [l] then 
            c:=r;
-     
+
+        l:= 2*i+1;
+        r:= 2*i +2;
+        tam:=high(H)+1;
     end;
 
 end;
 
 function Pop(var H:LEnteros): int64;
-var i,cont:longint;
-    aux:int64;
+var aux, aux2:int64;
+    i:longint;
 begin
-    cont:=0;
     aux:=0;
-    for i:=0 to high(H) do
-    begin
-         if H[i]>0 then 
-         cont:=cont+1;
-    end;
-    Pop:= H[cont-1];
-    H[cont-1]:= H[0];
-    H[0]:=Pop;
-    H[cont-1]:=0;
-    ExchangeChild(H,aux);
 
-    end;         
+    Pop:=H[0];
+    aux2:= H[high(H)-1];
+    H[high(H)-1]:= H[0];
+    H[0]:=aux2;
+    for i:=0 to high(H) do
+       write (H[i], ' ');
+    writeln(' ');
+    //writeln(Pop);
+    SetLength(H,high(h)-1);
+    ExchangeChild(H,aux);
+      
 end;
 
 
 
-procedure HeapSort(var A:LEnteros);
-var aa, h:LEnteros;
-var i, cont:longint;
+function HeapSort(var A:LEnteros):LEnteros;
+var H:LEnteros;
+var i:longint;
 begin
-    cont:=0;
-    SetLength(aa,high(A));
-    SetLength(h, high(A));
-    For i:=0 to high(A) do
-    begin
-        aa[i]:=0;
-        h[i]:=0;
-    end;
+    SetLength(HeapSort,1);
+    SetLength(H, 1);
 
     for i:=0 to high(A) do
     begin
-        Push(h, A[i]);
+        Push(H, A[i]);
+        //write (H[i], ' ');
     end;
-    
-    for i:=0 to high(h) do
-    begin
-        if h[i]>0 then
-           cont:=cont+1; 
-    end;
+    //SetLength(H,High(h)-1);
+    //writeln(' ');
+    for i:=0 to high(H) do
+       write (H[i], ' ');
+    writeln('ahi ');
 
-    while cont>0 do
+    while high(H)>0 do
     begin
-        for i:=0 to high(aa) do
-        begin
-           if aa[i] =0 then
-              aa[i]:=Pop(h);
-        end;
+         SetLength(HeapSort,high(HeapSort)+2);
+         HeapSort[high(HeapSort)-1]:=Pop(H);
     end; 
 
 end;
@@ -121,24 +108,26 @@ end;
 
 
 //-------------------main
-var A:LEnteros;
+var A,B:LEnteros;
     desde, hasta: TDateTime;
     tam,i:longint;
 Begin
     tam:=10;
     SetLength(A,tam);
+    //A:=[1,2,10,6,7,3,4,5,8,9];
     ArregloAleatorio(A,900);
 
     for i:=0 to tam-1 do
        write (A[i], ' ');
-    writeln('Tiempo');
+    writeln(' ');
 
-    desde:=time;
-    HeapSort(A);
-    hasta:=time;
+    desde:=now;
+    B:=HeapSort(A);
+    hasta:=now;
     Writeln(tam,',',(hasta-desde)/1000);
-    for i:=0 to tam-1 do
-       write (A[i], ' ');
+    for i:=0 to high(B) do
+       write (B[i], ' ');
+    writeln(' ');
 
 End.
 
