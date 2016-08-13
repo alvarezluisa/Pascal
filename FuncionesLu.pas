@@ -31,7 +31,6 @@ end;
 Procedure ArregloOrdenadoDescendente(A:LEnteros; cantidad:int64);
 var i:longint;
 begin
-    aux := cantidad;
     for i := 1 to cantidad do
     begin
       A[i] := cantidad;

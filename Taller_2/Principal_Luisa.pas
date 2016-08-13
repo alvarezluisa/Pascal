@@ -9,8 +9,8 @@ Var A, B, C :LEnteros;
 Begin
    // Da una longitud a la lista
    largo:=0;
-while largo< 100 do
- begin
+ while largo< 100 do
+  begin
    largo:=largo+10;
    SetLength(A,largo);
    SetLength(B,largo);
@@ -68,6 +68,6 @@ while largo< 100 do
    SetLength(C,0);
 
  end;
-readln
+ readln
 
 End.
