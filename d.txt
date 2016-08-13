@@ -1,8 +1,0 @@
-17 82 36 -82 44 285 -37 -259 -14 78 Tiempo
-An unhandled exception occurred at $08048383 :
-EAccessViolation : Access violation
-  $08048383
-  $0804844F
-  $080485F8
-  $08048751
-
